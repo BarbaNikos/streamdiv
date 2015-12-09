@@ -12,7 +12,11 @@ public class DiversityOperator implements Serializable {
 
     private ArrayList<Tuple> topK;
 
-    private ArrayList<Tuple> buffer;
+    private ArrayList<String> tweetBuf;
+
+    private ArrayList<Long> timestampBuf;
+
+    private ArrayList<Double> relevanceBuf;
 
     private int bufLen;
 
@@ -56,7 +60,7 @@ public class DiversityOperator implements Serializable {
     public List<Tuple> batchReplace() {
         int bufferSize = this.tweetBuf.size();
         for (int i = 0; i < bufferSize; i++) {
-            this.topK = incrementalReplace(this.tweetBuf.get(i));
+//            this.topK = incrementalReplace(this.tweetBuf.get(i));
         }
         this.tweetBuf.clear();
         this.timestampBuf.clear();

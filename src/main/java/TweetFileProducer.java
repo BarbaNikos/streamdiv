@@ -24,7 +24,7 @@ public class TweetFileProducer {
     private boolean finished;
 
     public TweetFileProducer(String pathToFile) {
-        this.format = new SimpleDateFormat("EEE MMM dd kk:mm:zz z yyyy", Locale.ENGLISH);
+        this.format = new SimpleDateFormat("EEE MMM dd kk:mm:ss z yyyy", Locale.ENGLISH);
         this.pathToFile = pathToFile;
         finished = false;
     }
@@ -54,13 +54,18 @@ public class TweetFileProducer {
         } catch (IOException e) {
             e.printStackTrace();
         }
-        if (line != null) {
+        if (line != null && line.indexOf('|') >= 0) {
             String[] attributes = line.split("\\|");
             Long timestamp = -1L;
             try {
                 timestamp = format.parse(attributes[1]).getTime();
             } catch (ParseException e) {
+                timestamp = -1L;
                 e.printStackTrace();
+            }
+            if (attributes.length < 15 || timestamp == -1L) {
+                System.out.println(attributes[attributes.length - 1]);
+                return null;
             }
             String tweet = attributes[14];
             values.add(timestamp);
