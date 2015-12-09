@@ -32,7 +32,7 @@ public class DiversityOperator implements Serializable {
     public List<Tuple> execute(Tuple tuple) {
         if(batch){
             this.buffer.add(tuple);
-            if(tweetBuf.size()>=bufLen)
+            if(this.buffer.size()>=bufLen)
                 return batchReplace();
             else
                 return null;
@@ -49,7 +49,7 @@ public class DiversityOperator implements Serializable {
     public List<Tuple> batchReplace() {
 		final double p = 0.5;
 		int numReplace = p*k;
-        int bufferSize = this.tweetBuf.size();
+        int bufferSize = this.buffer.size();
         for (int i = 0; i < bufferSize; i++) {
 			if(numReplace <= 0)
 			{
