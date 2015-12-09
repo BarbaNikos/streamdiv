@@ -3,6 +3,7 @@ import backtype.storm.tuple.Values;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 
 
 public class DiversityOperator implements Serializable {
@@ -11,11 +12,7 @@ public class DiversityOperator implements Serializable {
 
     private ArrayList<Tuple> topK;
 
-    private ArrayList<String> tweetBuf;
-
-    private ArrayList<Long> timestampBuf;
-
-    private ArrayList<Double> relevanceBuf;
+    private ArrayList<Tuple> buffer;
 
     private int bufLen;
 
@@ -34,8 +31,11 @@ public class DiversityOperator implements Serializable {
         this.bufLen = 10;
     }
 
-    public Values execute(String tweet, Long timestamp, Double relevancyScore) {
+    public List<Tuple> execute(Tuple tuple) {
         if(batch){
+            String tweet = tuple.getStringByField("tweet");
+            Long timestamp = tuple.getLongByField("timestamp");
+            Double relevancyScore = tuple.getDoubleByField("relevancy");
             tweetBuf.add(tweet);
             timestampBuf.add(timestamp);
             relevanceBuf.add(relevancyScore);
@@ -45,31 +45,30 @@ public class DiversityOperator implements Serializable {
                 return null;
         }
         else
-            return incrementalReplace(tweet, timestamp, relevancyScore);
+            return incrementalReplace(tuple);
     }
 
-    /* To be implemented
+    /**
+     * TODO: To be implemented
      * This function is only called when the buffers get full so no need to include that check within the function.
      * Remember to empty the buffers before returning.
      */
-    public Values batchReplace()
-    {
+    public List<Tuple> batchReplace() {
         int bufferSize = this.tweetBuf.size();
-        for(int i = 0; i < bufferSize; i++)
-        {
-            this.topK = incrementalReplace(this.tweetBuf.get(i), this.timestampBuf.get(i), this.relevanceBuf.get(i);
+        for (int i = 0; i < bufferSize; i++) {
+            this.topK = incrementalReplace(this.tweetBuf.get(i));
         }
         this.tweetBuf.clear();
         this.timestampBuf.clear();
         this.relevanceBuf.clear();
-        return this.topK;
+        return new ArrayList<Tuple>(this.topK);
     }
 
     /*
      * Decide whether to keep or discard a newly incoming tuple
      */
 
-    public ArrayList<Values> incrementalReplace(Tuple tuple) {
+    public List<Tuple> incrementalReplace(Tuple tuple) {
         if (topK.size() < k) {
             topK.add(tuple);
         } else {
@@ -92,17 +91,18 @@ public class DiversityOperator implements Serializable {
             } else if (dupTuples.size() > 1) {
                 dupTuples.add(tuple);
                 double minScore = Double.MAX_VALUE;
-                Tuple minTuple;
+                Tuple minTuple = null;
                 for(Tuple t : dupTuples) {
                     if(getCombinedScore(t.getLongByField("timestamp"),true,t.getDoubleByField("relevancy")) < minScore){
                         minScore = t.getDoubleByField("relevancy");
                         minTuple = t;
                     }
                 }
-                topK.remove(minTuple);
+                if (minTuple != null)
+                    topK.remove(minTuple);
             }
         }
-        return topK;
+        return new ArrayList<>(topK);
     }
 
     /*
@@ -135,7 +135,7 @@ public class DiversityOperator implements Serializable {
     }
 
     public double dist(String tweet1, String tweet2) {
-        ArrayList<double[]> vec = getVectors(tweet1,tweet2);
+        ArrayList<double[]> vec = getVectors(tweet1, tweet2);
         double[] vectorA = vec.get(0);
         double[] vectorB = vec.get(1);
         double dotProduct = 0.0;
@@ -163,11 +163,10 @@ public class DiversityOperator implements Serializable {
     /*
      * Generating combined intensity score
      */
-
-    public double getCombinedScore(long arrivalTime, boolean exponential, double recencyScore) {
+    public double getCombinedScore(long arrivalTime, boolean exponential, double relevancyScore) {
         double recencyScore = getRecencyScore(arrivalTime, exponential);
         double alpha = 0.5;
-        return alpha * relevenceScore + (1-alpha) * recencyScore;
+        return alpha * relevancyScore + (1-alpha) * recencyScore;
     }
 
     public int getK() {

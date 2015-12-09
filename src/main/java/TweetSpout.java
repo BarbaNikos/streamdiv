@@ -15,6 +15,13 @@ public class TweetSpout extends BaseRichSpout {
 
     private SpoutOutputCollector spoutOutputCollector;
 
+
+    Values -> ArrayList<Object>
+
+    Tuple -> Values, String[]
+
+    values.get(schema.getIndex("tweet"))
+
     private TweetFileProducer producer;
 
     public TweetSpout(TweetFileProducer producer) {
