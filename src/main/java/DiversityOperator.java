@@ -12,11 +12,7 @@ public class DiversityOperator implements Serializable {
 
     private ArrayList<Tuple> topK;
 
-    private ArrayList<String> tweetBuf;
-
-    private ArrayList<Long> timestampBuf;
-
-    private ArrayList<Double> relevanceBuf;
+	private ArrayList<Tuple> buffer;
 
     private int bufLen;
 
@@ -29,20 +25,13 @@ public class DiversityOperator implements Serializable {
         topK = new ArrayList<>();
         this.radius = radius;
         this.batch = batch;
-        this.tweetBuf = new ArrayList<>();
-        this.timestampBuf = new ArrayList<>();
-        this.relevanceBuf = new ArrayList<>();
+        this.buffer = new ArrayList<>();
         this.bufLen = 10;
     }
 
     public List<Tuple> execute(Tuple tuple) {
         if(batch){
-            String tweet = tuple.getStringByField("tweet");
-            Long timestamp = tuple.getLongByField("timestamp");
-            Double relevancyScore = tuple.getDoubleByField("relevancy");
-            tweetBuf.add(tweet);
-            timestampBuf.add(timestamp);
-            relevanceBuf.add(relevancyScore);
+            this.buffer.add(tuple);
             if(tweetBuf.size()>=bufLen)
                 return batchReplace();
             else
@@ -53,18 +42,23 @@ public class DiversityOperator implements Serializable {
     }
 
     /**
-     * TODO: To be implemented
+     * TODO: ADD SMARTER PROBABILITIES
      * This function is only called when the buffers get full so no need to include that check within the function.
      * Remember to empty the buffers before returning.
      */
     public List<Tuple> batchReplace() {
+		final double p = 0.5;
+		int numReplace = p*k;
         int bufferSize = this.tweetBuf.size();
         for (int i = 0; i < bufferSize; i++) {
-//            this.topK = incrementalReplace(this.tweetBuf.get(i));
+			if(numReplace <= 0)
+			{
+				break;
+			}
+			incrementalReplace(this.buffer.get(i));
+			numReplace--;
         }
-        this.tweetBuf.clear();
-        this.timestampBuf.clear();
-        this.relevanceBuf.clear();
+        this.buffer.clear();
         return new ArrayList<Tuple>(this.topK);
     }
 
