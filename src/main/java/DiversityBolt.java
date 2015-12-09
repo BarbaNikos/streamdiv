@@ -6,13 +6,12 @@ import backtype.storm.tuple.Fields;
 import backtype.storm.tuple.Tuple;
 import backtype.storm.tuple.Values;
 
+import java.util.List;
 import java.util.Map;
 
 public class DiversityBolt extends BaseRichBolt {
 
     private OutputCollector collector;
-
-    private int k;
 
     private DiversityOperator operator;
 
@@ -27,21 +26,26 @@ public class DiversityBolt extends BaseRichBolt {
 
     @Override
     public void execute(Tuple tuple) {
-        String tweet = tuple.getStringByField("tweet");
-        Long timestamp = tuple.getLongByField("timestamp");
-        Double relevancyScore = tuple.getDoubleByField("relevancy");
         /**
          * call the diversity operator
          */
-        Values result = operator.execute(tweet, timestamp, relevancyScore);
-        if (result != null)
-            collector.emit(result);
+        List<Tuple> result = operator.execute(tuple);
+        if (result != null) {
+            Values topK = new Values();
+            for (int i = 0; i < result.size(); i++) {
+                topK.add(result.get(i).getStringByField("tweet"));
+            }
+            while (topK.size() < operator.getK()) {
+                topK.add(new String(""));
+            }
+            collector.emit(topK);
+        }
     }
 
     @Override
     public void declareOutputFields(OutputFieldsDeclarer outputFieldsDeclarer) {
         String[] schema = new String[operator.getK()];
-        for (int i = 0; i < k; i++) {
+        for (int i = 0; i < operator.getK(); i++) {
             schema[i] = Integer.toString(i);
         }
         outputFieldsDeclarer.declare(new Fields(schema));

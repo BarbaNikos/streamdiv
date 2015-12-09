@@ -24,12 +24,12 @@ public class RelevancyBolt extends BaseRichBolt {
 
     @Override
     public void execute(Tuple tuple) {
-        String tweet = (String) tuple.getValueByField("tweet");
+        String tweet = tuple.getStringByField("tweet");
         Double relevancyScore = filter.getRelevance(tweet);
         Values values = new Values();
         values.add(tweet);
-        values.add(tuple.getValueByField("timestamp"));
-        values.add(tuple.getValueByField(Double.toString(relevancyScore)));
+        values.add(tuple.getLongByField("timestamp"));
+        values.add(relevancyScore);
         collector.emit(values);
     }
 

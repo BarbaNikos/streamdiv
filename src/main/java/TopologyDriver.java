@@ -10,14 +10,37 @@ public class TopologyDriver {
     public static void main(String[] args) {
         TopologyBuilder builder = new TopologyBuilder();
         Config conf = new Config();
-        String[] tweetSchema = {};
-        String[] projectedSchema = { "date", "text" };
+        String[] tweetSchema = { "tweet-contributors-list",
+                "date-created" ,
+                "current-user-retweet-id" ,
+                "favourite-count" ,
+                "geolocation-latitude,geolocation-longitude" ,
+                "user-id" ,
+                "in-reply-to-screen-name" ,
+                "in-reply-to-status-id" ,
+                "in-reply-to-user-id" ,
+                "language" ,
+                "place-fullname" ,
+                "quoted-status-id" ,
+                "retweet-count" ,
+                "source" ,
+                "text" ,
+                "username" ,
+                "userid" ,
+                "user-favourites-count" ,
+                "user-followers-count" ,
+                "user-friends-count" ,
+                "status-isfavourited" ,
+                "status-is-possibly-sensitive" ,
+                "status-is-retweet" ,
+                "status-is-retweeted" ,
+                "status-is-truncated" };
+        String[] projectedSchema = { "date-created", "text" };
         String[] keywords = {};
         Integer k = 10;
         Double radius = Double.valueOf(10);
         Boolean batch = true;
-        TweetFileProducer producer = new TweetFileProducer("data" + File.separator + "tweet_file_1.txt", tweetSchema,
-                projectedSchema);
+        TweetFileProducer producer = new TweetFileProducer("data" + File.separator + "tweet_file_1.txt");
         builder.setSpout("source", new TweetSpout(producer), 1).setNumTasks(1);
         RelevancyFilter relevancyFilter = new RelevancyFilter(keywords);
         builder.setBolt("relevancy", new RelevancyBolt(relevancyFilter), 1).setNumTasks(1).shuffleGrouping("source");

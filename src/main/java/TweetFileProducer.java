@@ -3,6 +3,10 @@ import backtype.storm.tuple.Values;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import java.io.*;
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Locale;
 
 /**
  * Created by nick on 12/9/15.
@@ -11,9 +15,7 @@ public class TweetFileProducer {
 
     Logger logger = LoggerFactory.getLogger(TweetFileProducer.class);
 
-    private Fields schema;
-
-    private Fields projectedSchema;
+    private DateFormat format;
 
     private String pathToFile;
 
@@ -21,9 +23,8 @@ public class TweetFileProducer {
 
     private boolean finished;
 
-    public TweetFileProducer(String pathToFile, String[] schema, String[] projectedSchema) {
-        this.schema = new Fields(schema);
-        this.projectedSchema = new Fields(projectedSchema);
+    public TweetFileProducer(String pathToFile) {
+        this.format = new SimpleDateFormat("EEE MMM dd kk:mm:zz z yyyy", Locale.ENGLISH);
         this.pathToFile = pathToFile;
         finished = false;
     }
@@ -55,12 +56,15 @@ public class TweetFileProducer {
         }
         if (line != null) {
             String[] attributes = line.split("\\|");
-            if (attributes.length < schema.size())
-                return null;
-            for (int i = 0; i < schema.size(); i++) {
-                if (projectedSchema.toList().contains(schema.get(i)))
-                    values.add(attributes[i]);
+            Long timestamp = -1L;
+            try {
+                timestamp = format.parse(attributes[1]).getTime();
+            } catch (ParseException e) {
+                e.printStackTrace();
             }
+            String tweet = attributes[14];
+            values.add(timestamp);
+            values.add(tweet);
             return values;
         }else {
             finished = true;
