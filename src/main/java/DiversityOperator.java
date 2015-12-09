@@ -20,13 +20,13 @@ public class DiversityOperator implements Serializable {
 
     private boolean batch;
 
-    public DiversityOperator(int k, double radius, boolean batch) {
+    public DiversityOperator(int k, double radius, boolean batch, int bufferLength) {
         this.k = k;
         topK = new ArrayList<>();
         this.radius = radius;
         this.batch = batch;
         this.buffer = new ArrayList<>();
-        this.bufLen = 10;
+        this.bufLen = bufferLength;
     }
 
     public List<Tuple> execute(Tuple tuple) {
@@ -48,7 +48,7 @@ public class DiversityOperator implements Serializable {
      */
     public List<Tuple> batchReplace() {
 		final double p = 0.5;
-		int numReplace = p*k;
+		int numReplace = (int) p * k;
         int bufferSize = this.buffer.size();
         for (int i = 0; i < bufferSize; i++) {
 			if(numReplace <= 0)

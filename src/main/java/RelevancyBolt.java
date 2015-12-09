@@ -27,15 +27,15 @@ public class RelevancyBolt extends BaseRichBolt {
         String tweet = tuple.getStringByField("tweet");
         Double relevancyScore = filter.getRelevance(tweet);
         Values values = new Values();
-        values.add(tweet);
         values.add(tuple.getLongByField("timestamp"));
+        values.add(tweet);
         values.add(relevancyScore);
         collector.emit(values);
     }
 
     @Override
     public void declareOutputFields(OutputFieldsDeclarer outputFieldsDeclarer) {
-        String[] schema = { "tweet", "timestamp", "relevancy" };
+        String[] schema = { "timestamp", "tweet", "relevancy" };
         outputFieldsDeclarer.declare(new Fields(schema));
     }
 }
