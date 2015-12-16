@@ -49,24 +49,22 @@ public class DiversityOperator implements Serializable {
      */
     public List<Tuple> batchReplace() {
 		final double p = 0.5;
-		int numReplace = (int) p * k;
+		int numReplace = (int) Math.ceil(p * k);
         int bufferSize = this.buffer.size();
         for (int i = 0; i < bufferSize; i++) {
-			if(numReplace <= 0)
-			{
+			if (numReplace <= 0)
 				break;
-			}
 			incrementalReplace(this.buffer.get(i));
 			numReplace--;
         }
         this.buffer.clear();
-        return new ArrayList<Tuple>(this.topK);
+        return new ArrayList<>(this.topK);
     }
 
-    /*
+    /**
+     *
      * Decide whether to keep or discard a newly incoming tuple
      */
-
     public List<Tuple> incrementalReplace(Tuple tuple) {
         if (topK.size() < k) {
             topK.add(tuple);
