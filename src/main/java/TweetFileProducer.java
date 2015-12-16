@@ -62,16 +62,16 @@ public class TweetFileProducer implements Serializable {
                 String[] attributes = line.split("\\|");
                 Long timestamp = -1L;
                 try {
-                    timestamp = format.parse(attributes[1]).getTime();
+                    timestamp = format.parse(attributes[0]).getTime();
                 } catch (ParseException e) {
                     timestamp = -1L;
                     e.printStackTrace();
                 }
-                if (attributes.length < 15 || timestamp == -1L) {
-                    System.out.println(attributes[attributes.length - 1]);
-                    return null;
-                }
-                String tweet = attributes[14];
+//                if (attributes.length < 15 || timestamp == -1L) {
+//                    System.out.println(attributes[attributes.length - 1]);
+//                    return null;
+//                }
+                String tweet = attributes[1];
                 values.add(timestamp);
                 values.add(tweet);
                 return values;

@@ -36,20 +36,22 @@ public class TopologyDriver {
     static String[] projectedSchema = { "date-created", "text" };
 
     public static void main(String[] args) {
-        int bufferLength = 10;
+        int bufferLength = 100;
         TopologyBuilder builder = new TopologyBuilder();
         Config conf = new Config();
-        String[] keywords = { "the", "i" };
+        String[] keywords = { "the","i","to","a","and","is","in","it","you","of","for","on","my","\\'s","that","at",
+                "with","me","do","have","just","this","be","n\\'t","so","are","\\'m","not","was","but","out","up",
+                "what","now","new","from","your" };
         Integer k = 10;
-        Double radius = Double.valueOf(10);
-        Boolean batch = true;
-        TweetFileProducer producer = new TweetFileProducer("data" + File.separator + "tweet_file_0.txt");
+        Double radius = Double.valueOf(0.3);
+        Boolean batch = false;
+        TweetFileProducer producer = new TweetFileProducer("data" + File.separator + "tweet_file_1.txt");
         builder.setSpout("source", new TweetSpout(producer), 1).setNumTasks(1);
         RelevancyFilter relevancyFilter = new RelevancyFilter(keywords);
         builder.setBolt("relevancy", new RelevancyBolt(relevancyFilter), 1).setNumTasks(1).shuffleGrouping("source");
         DiversityOperator diversityOperator = new DiversityOperator(k, radius, batch, bufferLength);
         builder.setBolt("diversity", new DiversityBolt(diversityOperator), 1).setNumTasks(1).shuffleGrouping("relevancy");
-        conf.setDebug(true);
+        conf.setDebug(false);
         conf.setNumWorkers(1);
         conf.setNumAckers(1);
         conf.put(Config.TOPOLOGY_WORKER_CHILDOPTS,

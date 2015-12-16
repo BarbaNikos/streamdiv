@@ -30,15 +30,16 @@ public class DiversityOperator implements Serializable {
     }
 
     public List<Tuple> execute(Tuple tuple) {
-        if(batch){
+        if (batch) {
             this.buffer.add(tuple);
-            if(this.buffer.size()>=bufLen)
+            if (this.buffer.size() >= bufLen) {
                 return batchReplace();
-            else
+            } else {
                 return null;
-        }
-        else
+            }
+        } else {
             return incrementalReplace(tuple);
+        }
     }
 
     /**
@@ -144,7 +145,7 @@ public class DiversityOperator implements Serializable {
             normA += Math.pow(vectorA[i], 2);
             normB += Math.pow(vectorB[i], 2);
         }
-        return dotProduct / (Math.sqrt(normA) * Math.sqrt(normB));
+        return 1 - (dotProduct / (Math.sqrt(normA) * Math.sqrt(normB)));
     }
 
     /*

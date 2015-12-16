@@ -38,6 +38,7 @@ public class DiversityBolt extends BaseRichBolt {
             while (topK.size() < operator.getK()) {
                 topK.add(new String(""));
             }
+            System.out.println("top-K produced: " + topK.toString());
             collector.emit(topK);
         }
     }
