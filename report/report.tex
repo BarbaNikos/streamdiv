@@ -385,7 +385,7 @@
 %
 \author{\IEEEauthorblockN{Steve,
 Nick,
-Nathan,
+Nathan Ong,
 Zaeem,
 Panos Chrysanthis and
 Alexandros Labrinidis}
@@ -409,6 +409,7 @@ Pittsburgh, Pennsylvania 15260\\ Email: }
 
 \begin{abstract}
 %\boldmath
+Streaming environments lack a method
 For this project we explore different designs for a diversity operator in
 stream processing environments. In addition, we factor in the impact of
 recency and user ranking of incoming data in the end result. The system
@@ -417,8 +418,8 @@ stream of data as input. Processing is modeled as a pipeline of operators,
 which process incoming tuples and forward results to the next operator.
 The output is not a single result (as in the case of traditional databases),
 but periodical results that reflect the most sensible outcome (according
-to the algorithm) based on time-windows.
-As far as different dimensions of the problem are concerned, ranking is
+to the algorithm) based on time-windows.\\
+\indent As far as different dimensions of the problem are concerned, ranking is
 considered as a set of user-defined properties that are either attached to
 incoming tuples (annotate), or are used for filtering out tuples. Turning
 to the diversity operator, we abstract it as a stateful operator, with time-
