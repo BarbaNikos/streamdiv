@@ -36,15 +36,15 @@ public class TopologyDriver {
     static String[] projectedSchema = { "date-created", "text" };
 
     public static void main(String[] args) {
-        int bufferLength = 1000;
+        int bufferLength = 75000;
         Integer k = 10;
+        Double radius = Double.valueOf(0.8);
         Boolean batch = false;
         TopologyBuilder builder = new TopologyBuilder();
         Config conf = new Config();
         String[] keywords = { "the","i","to","a","and","is","in","it","you","of","for","on","my","\\'s","that","at",
                 "with","me","do","have","just","this","be","n\\'t","so","are","\\'m","not","was","but","out","up",
                 "what","now","new","from","your" };
-        Double radius = Double.valueOf(0.3);
         TweetFileProducer producer = new TweetFileProducer("data" + File.separator + "tweet_file.txt");
         builder.setSpout("source", new TweetSpout(producer), 1).setNumTasks(1);
         RelevancyFilter relevancyFilter = new RelevancyFilter(keywords);

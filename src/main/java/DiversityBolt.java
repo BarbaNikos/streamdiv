@@ -55,9 +55,9 @@ public class DiversityBolt extends BaseRichBolt {
             while (topK.size() < operator.getK()) {
                 topK.add(new String(""));
             }
-            distanceStatistics.addValue(operator.getAverageDistance());
-            relevancyStatistics.addValue(operator.getAverageRelevancyScore());
-            intensityStatistics.addValue(operator.getAverageIntensityScore());
+//            distanceStatistics.addValue(operator.getAverageDistance());
+//            relevancyStatistics.addValue(operator.getAverageRelevancyScore());
+//            intensityStatistics.addValue(operator.getAverageIntensityScore());
             collector.emit(topK);
         }
     }

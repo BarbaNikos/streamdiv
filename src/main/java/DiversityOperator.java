@@ -3,9 +3,13 @@ import backtype.storm.tuple.Values;
 import org.apache.commons.math3.stat.descriptive.DescriptiveStatistics;
 
 import java.io.Serializable;
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
 
 
 public class DiversityOperator implements Serializable {
@@ -22,9 +26,7 @@ public class DiversityOperator implements Serializable {
 
     private boolean batch;
 
-    private static final double maxIntensityValue = 10;
-
-    private static final double maxRelevancyValue = 10;
+    private static final double maxIntensityValue = 72;
 
     public DiversityOperator(int k, double radius, boolean batch, int bufferLength) {
         this.k = k;
@@ -156,7 +158,7 @@ public class DiversityOperator implements Serializable {
             double relevancy = tweet.getDoubleByField("relevancy");
             statistics.addValue(relevancy);
         }
-        return (statistics.getMean() / statistics.getMax());
+        return statistics.getMean();
     }
 
     public double getAverageIntensityScore() {
@@ -165,7 +167,7 @@ public class DiversityOperator implements Serializable {
             double intensity = getCombinedScore(t.getLongByField("timestamp"), true, t.getDoubleByField("relevancy"));
             statistics.addValue(intensity);
         }
-        return statistics.getMean();
+        return statistics.getSum() / maxIntensityValue;
     }
 
     public double dist(String tweet1, String tweet2) {
@@ -187,10 +189,16 @@ public class DiversityOperator implements Serializable {
      * Get Recency score
      */
     public double getRecencyScore(long arrivalTime, boolean exponential) {
-        long currentTime = System.nanoTime();
+        DateFormat format = new SimpleDateFormat("EEE MMM dd kk:mm:ss z yyyy", Locale.ENGLISH);;
+        long currentTime = 0;
+        try {
+            currentTime = format.parse("Fri Dec 18 17:08:48 EST 2015").getTime();
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
         if (exponential)
-            return Math.exp(-1*Math.abs(arrivalTime-currentTime));
-        return -1*Math.abs(arrivalTime-currentTime);
+            return Math.exp( -1 * Math.abs( arrivalTime - currentTime ) );
+        return -1 * Math.abs( arrivalTime - currentTime );
     }
 
     /*
