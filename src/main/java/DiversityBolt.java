@@ -20,6 +20,8 @@ public class DiversityBolt extends BaseRichBolt {
 
     private DescriptiveStatistics relevancyStatistics;
 
+    private DescriptiveStatistics intensityStatistics;
+
     public DiversityBolt(DiversityOperator operator) {
         this.operator = operator;
     }
@@ -29,12 +31,14 @@ public class DiversityBolt extends BaseRichBolt {
         this.collector = outputCollector;
         distanceStatistics = new DescriptiveStatistics();
         relevancyStatistics = new DescriptiveStatistics();
+        intensityStatistics = new DescriptiveStatistics();
     }
 
     @Override
     public void cleanup() {
-        System.out.println("Mean Average Distance: " + distanceStatistics.getMean());
-        System.out.println("Mean Average Relevancy Score: " + relevancyStatistics.getMean());
+        System.out.println("Mean Average Distance: " + operator.getAverageDistance());
+        System.out.println("Mean Average Relevancy Score: " + operator.getAverageRelevancyScore());
+        System.out.println("Mean Average Intensity Score: " + operator.getAverageIntensityScore());
     }
 
     @Override
@@ -53,6 +57,7 @@ public class DiversityBolt extends BaseRichBolt {
             }
             distanceStatistics.addValue(operator.getAverageDistance());
             relevancyStatistics.addValue(operator.getAverageRelevancyScore());
+            intensityStatistics.addValue(operator.getAverageIntensityScore());
             collector.emit(topK);
         }
     }

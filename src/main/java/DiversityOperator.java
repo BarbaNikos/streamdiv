@@ -22,6 +22,10 @@ public class DiversityOperator implements Serializable {
 
     private boolean batch;
 
+    private static final double maxIntensityValue = 10;
+
+    private static final double maxRelevancyValue = 10;
+
     public DiversityOperator(int k, double radius, boolean batch, int bufferLength) {
         this.k = k;
         topK = new ArrayList<>();
@@ -135,7 +139,7 @@ public class DiversityOperator implements Serializable {
     public double getAverageDistance() {
         DescriptiveStatistics statistics = new DescriptiveStatistics();
         for (int i = 0; i < topK.size(); i++) {
-            for (int j = 0; j < topK.size(); j++) {
+            for (int j = i; j < topK.size(); j++) {
                 Tuple tweet1 = topK.get(i);
                 Tuple tweet2 = topK.get(j);
                 double distance = dist(tweet1.getStringByField("tweet"), tweet2.getStringByField("tweet"));
@@ -151,6 +155,15 @@ public class DiversityOperator implements Serializable {
             Tuple tweet = topK.get(i);
             double relevancy = tweet.getDoubleByField("relevancy");
             statistics.addValue(relevancy);
+        }
+        return (statistics.getMean() / statistics.getMax());
+    }
+
+    public double getAverageIntensityScore() {
+        DescriptiveStatistics statistics = new DescriptiveStatistics();
+        for (Tuple t : topK) {
+            double intensity = getCombinedScore(t.getLongByField("timestamp"), true, t.getDoubleByField("relevancy"));
+            statistics.addValue(intensity);
         }
         return statistics.getMean();
     }
