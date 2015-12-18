@@ -36,7 +36,7 @@ public class TopologyDriver {
     static String[] projectedSchema = { "date-created", "text" };
 
     public static void main(String[] args) {
-        int bufferLength = 100;
+        int bufferLength = 75000;
         Integer k = 10;
         Boolean batch = true;
         TopologyBuilder builder = new TopologyBuilder();
@@ -45,7 +45,7 @@ public class TopologyDriver {
                 "with","me","do","have","just","this","be","n\\'t","so","are","\\'m","not","was","but","out","up",
                 "what","now","new","from","your" };
         Double radius = Double.valueOf(0.3);
-        TweetFileProducer producer = new TweetFileProducer("data" + File.separator + "tweet_file_1.txt");
+        TweetFileProducer producer = new TweetFileProducer("data" + File.separator + "tweet_file.txt");
         builder.setSpout("source", new TweetSpout(producer), 1).setNumTasks(1);
         RelevancyFilter relevancyFilter = new RelevancyFilter(keywords);
         builder.setBolt("relevancy", new RelevancyBolt(relevancyFilter), 1).setNumTasks(1).shuffleGrouping("source");

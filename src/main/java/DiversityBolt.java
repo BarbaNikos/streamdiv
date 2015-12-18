@@ -5,6 +5,7 @@ import backtype.storm.topology.base.BaseRichBolt;
 import backtype.storm.tuple.Fields;
 import backtype.storm.tuple.Tuple;
 import backtype.storm.tuple.Values;
+import org.apache.commons.math3.stat.descriptive.DescriptiveStatistics;
 
 import java.util.List;
 import java.util.Map;
@@ -15,6 +16,10 @@ public class DiversityBolt extends BaseRichBolt {
 
     private DiversityOperator operator;
 
+    private DescriptiveStatistics distanceStatistics;
+
+    private DescriptiveStatistics relevancyStatistics;
+
     public DiversityBolt(DiversityOperator operator) {
         this.operator = operator;
     }
@@ -22,6 +27,14 @@ public class DiversityBolt extends BaseRichBolt {
     @Override
     public void prepare(Map map, TopologyContext topologyContext, OutputCollector outputCollector) {
         this.collector = outputCollector;
+        distanceStatistics = new DescriptiveStatistics();
+        relevancyStatistics = new DescriptiveStatistics();
+    }
+
+    @Override
+    public void cleanup() {
+        System.out.println("Mean Average Distance: " + distanceStatistics.getMean());
+        System.out.println("Mean Average Relevancy Score: " + relevancyStatistics.getMean());
     }
 
     @Override
@@ -38,7 +51,8 @@ public class DiversityBolt extends BaseRichBolt {
             while (topK.size() < operator.getK()) {
                 topK.add(new String(""));
             }
-            System.out.println("top-K produced: " + topK.toString());
+            distanceStatistics.addValue(operator.getAverageDistance());
+            relevancyStatistics.addValue(operator.getAverageRelevancyScore());
             collector.emit(topK);
         }
     }

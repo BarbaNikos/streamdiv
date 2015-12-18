@@ -1,5 +1,7 @@
 import backtype.storm.tuple.Tuple;
 import backtype.storm.tuple.Values;
+import org.apache.commons.math3.stat.descriptive.DescriptiveStatistics;
+
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -105,7 +107,6 @@ public class DiversityOperator implements Serializable {
     /*
      * Get the cosine similarity between two twitters
      */
-
     private ArrayList<double[]> getVectors(String tweet1, String tweet2) {
         int vectorIdx = 0;
         ArrayList<double[]> ret = new ArrayList<>();
@@ -131,6 +132,29 @@ public class DiversityOperator implements Serializable {
         return ret;
     }
 
+    public double getAverageDistance() {
+        DescriptiveStatistics statistics = new DescriptiveStatistics();
+        for (int i = 0; i < topK.size(); i++) {
+            for (int j = 0; j < topK.size(); j++) {
+                Tuple tweet1 = topK.get(i);
+                Tuple tweet2 = topK.get(j);
+                double distance = dist(tweet1.getStringByField("tweet"), tweet2.getStringByField("tweet"));
+                statistics.addValue(distance);
+            }
+        }
+        return statistics.getMean();
+    }
+
+    public double getAverageRelevancyScore() {
+        DescriptiveStatistics statistics = new DescriptiveStatistics();
+        for (int i = 0; i < topK.size(); i++) {
+            Tuple tweet = topK.get(i);
+            double relevancy = tweet.getDoubleByField("relevancy");
+            statistics.addValue(relevancy);
+        }
+        return statistics.getMean();
+    }
+
     public double dist(String tweet1, String tweet2) {
         ArrayList<double[]> vec = getVectors(tweet1, tweet2);
         double[] vectorA = vec.get(0);
@@ -149,7 +173,6 @@ public class DiversityOperator implements Serializable {
     /*
      * Get Recency score
      */
-
     public double getRecencyScore(long arrivalTime, boolean exponential) {
         long currentTime = System.nanoTime();
         if (exponential)
