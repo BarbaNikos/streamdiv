@@ -7,3 +7,5 @@
 .log
 .blg
 .synctex.gz
+.bst
+.bbl
