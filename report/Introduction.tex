@@ -1,3 +1,28 @@
 \section{Introduction}
 
 Data creation and collection only continues to increase, leaving a large burden on analysts to come up with a way to quickly and efficiently comb through the data to locate trends and correlations.  There tends to be a focus on data-specific approaches with frameworks that work well for certain kinds of data (but not well on others CITATION NEEDED).  There also is a need in data analysis to provide relevant but diverse data points as a digest of the full data set.  Several offline versions have been created \cite{Ge:2015:PD:2795218.2795224} CITATIONS NEEDED, but lack the speed to work in a streaming environment.  We present StreamDiv, a streaming framework built on top of a previously developed diversity system for offline database systems, PrefDiv\cite{Ge:2015:PD:2795218.2795224}, to provide queriers of a data streaming systems a top-$k$ set that is most relevant and diverse, adding recency as a possible influence on the digested set.
+
+The system
+model of our work is a stand-alone stream processing system, with a single
+stream of data as input. Processing is modeled as a pipeline of operators,
+which process incoming tuples and forward results to the next operator.
+The output is not a single result (as in the case of traditional databases),
+but periodical results that reflect the most sensible outcome (according
+to the algorithm) based on time-windows.\\
+
+\indent As far as different dimensions of the problem are concerned, ranking is
+considered as a set of user-defined properties that are either attached to
+incoming tuples (annotate), or are used for filtering out tuples. Turning
+to the diversity operator, we abstract it as a stateful operator, with time-
+based sliding windows. The operator's frequency of result production
+can be one of the following: (i) a temporary snapshot of the most diverse
+tuples in the current time-window produced every time a tuple is received,
+(ii) a set of the most diverse tuples among all the tuples that have been
+received in a user-defined epoch. In the latter case, we consider how
+many tuples are replaced and which ones every time a new tuple arrives.
+For the former case, we consider a static approach (a pre-defined fraction
+p of the tuples are replaced after every epoch), and a dynamic one (the
+fraction p of the tuples replaced is proportional to the $\delta$ in diversity gained
+compared to the replacement fraction of the previous epoch). As regards
+to replacement policy, we have the alternatives of random replacement,
+and least recently tuple received replacement.
