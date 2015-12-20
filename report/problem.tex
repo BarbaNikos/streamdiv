@@ -1,2 +1,17 @@
 \section{Problem Definition}
-Formal definition of the problem...
+\indent As far as different dimensions of the problem are concerned, ranking is
+considered as a set of user-defined properties that are either attached to
+incoming tuples (annotate), or are used for filtering out tuples. Turning
+to the diversity operator, we abstract it as a stateful operator, with time-
+based sliding windows. The operator's frequency of result production
+can be one of the following: (i) a temporary snapshot of the most diverse
+tuples in the current time-window produced every time a tuple is received,
+(ii) a set of the most diverse tuples among all the tuples that have been
+received in a user-defined epoch. In the latter case, we consider how
+many tuples are replaced and which ones every time a new tuple arrives.
+For the former case, we consider a static approach (a pre-defined fraction
+p of the tuples are replaced after every epoch), and a dynamic one (the
+fraction p of the tuples replaced is proportional to the $\delta$ in diversity gained
+compared to the replacement fraction of the previous epoch). As regards
+to replacement policy, we have the alternatives of random replacement,
+and least recently tuple received replacement.

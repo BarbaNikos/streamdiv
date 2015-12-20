@@ -409,8 +409,8 @@ Pittsburgh, Pennsylvania 15260\\ Email: }
 
 \begin{abstract}
 %\boldmath
-Data mountains continue to grow in size, increasing the difficulty in retrieving useful analysis from them.  In addition, generated data is frequently plagued by sameness; the data that is retrieved tends to follow the same pattern, helpful in prediction tasks or outlier detection, but not necessarily helpful in characterizing the data from a stream.  Users tend to know in a general sense what they are searching for in their datasets and streams, but may not know the full space of relevant results.  Diversity helps alleviate this problem, but faces its own challenges when combined with relevancy and recency in streaming contexts.\\
-\indent In our work, we explore different designs for a diversity operator in a stream processing environment.  In addition, we factor in the impact of recency and user-defined relevancy by ranking incoming data.  Users will specify a size for a representative top-$k$ set for the data seen from the stream.  This top-$k$ set is maintained by the system and updated based on recency, relevancy, and diversity from continuous streaming data.  We consider two types of tuple-replacement schemes, incremental and batch, for maintaining the top-$k$ set, and find CONCLUSION.
+Data mountains continue to grow in size, increasing the difficulty in retrieving useful analysis from them.  In addition, generated data is frequently plagued by sameness; the data that is retrieved tends to follow the same pattern, helpful in simple prediction tasks or outlier detection, but not necessarily helpful in characterizing the data from a stream.  Users tend to know in a general sense what they are searching for in their datasets and streams, but may not know the full space of relevant results.  Diversity helps alleviate this problem, but faces its own challenges when combined with relevancy and recency in streaming contexts.\\
+\indent In our work, we explore different designs for a diversity operator in a stream processing environment.  In addition, we factor in the impact of recency and user-defined relevancy by ranking incoming data.  Users will specify a size for a representative top-$k$ set for the data seen from the stream.  This top-$k$ set is maintained by the system and updated based on recency, relevancy, and diversity from continuous streaming data.  We consider two types of tuple-replacement schemes, Incremental and Batch, for maintaining the top-$k$ set, and find CONCLUSION.
 \end{abstract}
 % IEEEtran.cls defaults to using nonbold math in the Abstract.
 % This preserves the distinction between vectors and scalars. However,
@@ -438,7 +438,6 @@ Data mountains continue to grow in size, increasing the difficulty in retrieving
 \input{Introduction}
 \input{Preliminaries}
 \input{problem}
-\input{algorithms}
 \input{results}
 \input{conclusion}
 
