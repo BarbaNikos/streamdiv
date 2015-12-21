@@ -2,9 +2,9 @@
 We discuss two replacement algorithms for maintaining the top $k$ set as new tuples arrive. The first is an incremental replacement algorithm the processes each individual tuple as it arrives and decides whether to discard the new tuple or replace it with a tuple already in the top $k$ list. The second, called the batch replacement algorithm is a more general version of the incremental algorithm and processes an incoming batch of more than one tuples to maintain the top $k$ list.
 
 \subsection{Incremental Algorithm}
-	The algorithm for the incremental replacement scheme is as follows:
+	The algorithm for the incremental replacement scheme can be found as Algorithm \ref{alg:Incremental}.
 	\begin{algorithm}
-		\caption{Incremental }
+		\caption{Incremental}
 		\label{alg:Incremental}
 		\begin{algorithmic}[1]
 			\REQUIRE ~~\\
@@ -31,6 +31,31 @@ We discuss two replacement algorithms for maintaining the top $k$ set as new tup
 		\end{algorithmic}
 	\end{algorithm}
 
-\subsection{Batch Replacement Algorithm}
+\newcommand{\algorithmicbreak}{\textbf{break}}
+\newcommand{\BREAK}{\STATE \algorithmicbreak}
 
-TODO!
+\subsection{Batch Replacement Algorithm}
+	The algorithm for the batch replacement scheme can be found as Algorithm \ref{alg:Batch}.
+	\begin{algorithm}
+		\caption{Batch}
+		\label{alg:Batch}
+		\begin{algorithmic}[1]
+			\REQUIRE ~~\\
+			A set of $k$ tuples $S$, a set of $n$ buffered tuples $N$, a replacement coefficient $p$ such that $0 \le p \le 1$, .
+			\ENSURE ~~\\
+			An updated top-$k$ representative set $S$.
+			\STATE Let $R := \lfloor k*p\rfloor$
+			\FOR{$i := 0$ to $n$}
+				\IF{$|S| < k$}
+					\STATE $S := S \cup {N[i]}$
+				\ELSE
+					\STATE Incremental($S$, $N[i]$)
+					\STATE $R := R-1$
+				\ENDIF
+				\IF{$R = 0$}
+					\BREAK
+				\ENDIF
+			\ENDFOR
+			\RETURN $S$
+		\end{algorithmic}
+	\end{algorithm}
