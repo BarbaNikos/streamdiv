@@ -9,10 +9,17 @@
 		\item $Rec(t) = e^{-|T_C - T_A|}$
 	\end{enumerate}
 	The first provides a linear decay, allowing older tuples the possibility to persist longer in the top-$k$ set.  The second provides an exponential decay, which heavily prefers newer tuples.
+	%TO REMOVE FOR THE REAL PAPER
+	In our preliminary experiments, we use the exponential decay version.
+	
 
 \subsection{Relevancy}
-	Relevancy $Rel(t)$ is a user-defined function regarding what tuples are considered relevant in a user's query.  We provide an explanation as to what constitutes Relevancy in Section IV, as the definition is dependent on the query.
+	Relevancy $Rel(t)$ is a user-defined function regarding what tuples are considered relevant in a user's query.  %We provide an explanation as to what constitutes Relevancy in Section IV, as the definition is dependent on the query.
+	%TO REMOVE FOR THE REAL PAPER
+	In our preliminary experiments, we do a simple keyword comparison.  Given a user-defined set of keywords, we check to see the number of keywords that are found in the tweet.
 
 \subsection{Diversity}
-	Diversity is a complex operation divided into three parts: Replacement Policy, Distance Definition, and Distance Threshold.  
+	Diversity is a complex operation divided into three parts: Replacement Policy, Distance Function, and Distance Threshold.  The descriptions of the two different Replacement Policies are found in Section V.  The Distance Function is a user-defined function of two tuples $d(t_1,t_2)$ providing a single score that describes the distance between the two tuples in the attribute space.  The Distance Threshold, $d_{thresh}$ describes the maximum score between two tuples to consider them to be \emph{neighbors}, i.e. similar to each other.  The space that surrounds a single tuple $t_0$ with a distance of up to $d_{thresh}$,  ($\forall t' \in \mathbb{T}, d(t_0,t' ) \le d_{thresh}$) indicates the \emph{neighborhood} that the tuple could represent, if chosen.  The Distance Threshold is currently a user-defined value, and as a result is dependent on the chosen Distance Function and the attribute space.
+	%TO REMOVE FOR THE REAL PAPER
+	In our preliminary experiments, we use Cosine Similarity as our distance function, which generates the representation of the word co-occurrences of the pair of tweets in vector-space, then using the dot-product of the two tuple vectors as the distance between them.
 

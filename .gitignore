@@ -1,11 +1,11 @@
 # OS generated files #
 ######################
-.DS_Store
-.DS_Store?
-.bak
-.aux
-.log
-.blg
-.synctex.gz
-.bst
-.bbl
+*.DS_Store
+*.DS_Store?
+*.bak
+*.aux
+*.log
+*.blg
+*.synctex.gz
+*.bst
+*.bbl
