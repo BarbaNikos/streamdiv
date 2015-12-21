@@ -1,0 +1,2 @@
+\section{Problem Definition}
+Consider a streaming system where a batch of tuples arrives at fixed intervals. The number of tuples within the batch could be different at different times. Consider one such batch, denoted by $N$, that arrives at time $t$ containing $n$  tuples. The tuples within the batch are represented as $N={t_1,t_2,...,t_n}$ 
