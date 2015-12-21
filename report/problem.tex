@@ -1,28 +1,18 @@
 \section{Problem Definition}
+\subsection{Input Output Relationship}
+	Let $k$ be the number of tuples of $S$, where $S = \{t_0, t_1, \dots, t_{k-1}\}$ representing the top-$k$ set.  Let $n$ be the number of tuples of $N$, where $N = \{t'_0, t'_1, \dots, t'_{n-1}\}$ representing the set of incoming tuples from the stream.  (Note for the Incremental Replacement Scheme, $n = 1$.)  Our goal is to take some tuples from $N$ to replace some tuples in $S$ based on recency, relevancy, and diversity.
 
-/**********This is the original Github version of Problem Definition *********/
-\indent As far as different dimensions of the problem are concerned, ranking is
-considered as a set of user-defined properties that are either attached to
-incoming tuples (annotate), or are used for filtering out tuples. Turning
-to the diversity operator, we abstract it as a stateful operator, with time-
-based sliding windows. The operator's frequency of result production
-can be one of the following: (i) a temporary snapshot of the most diverse
-tuples in the current time-window produced every time a tuple is received,
-(ii) a set of the most diverse tuples among all the tuples that have been
-received in a user-defined epoch. In the latter case, we consider how
-many tuples are replaced and which ones every time a new tuple arrives.
-For the former case, we consider a static approach (a pre-defined fraction
-p of the tuples are replaced after every epoch), and a dynamic one (the
-fraction p of the tuples replaced is proportional to the $\delta$ in diversity gained
-compared to the replacement fraction of the previous epoch). As regards
-to replacement policy, we have the alternatives of random replacement,
-and least recently tuple received replacement.
+\subsection{Recency}
+	Recency is defined as a monotonically decreasing score, computed as some formula relating the tuple's timestamp of arrival to the system $T_A$ and the current system time $T_C$.  We choose two different formulas to capture a stronger and weaker emphasis on the recency score of a tuple $Rel(t)$.
+	\begin{enumerate}
+		\item $Rec(t) = -|T_C - T_A|$
+		\item $Rec(t) = e^{-|T_C - T_A|}$
+	\end{enumerate}
+	The first provides a linear decay, allowing older tuples the possibility to persist longer in the top-$k$ set.  The second provides an exponential decay, which heavily prefers newer tuples.
 
+\subsection{Relevancy}
+	Relevancy $Rel(t)$ is a user-defined function regarding what tuples are considered relevant in a user's query.  We provide an explanation as to what constitutes Relevancy in Section IV, as the definition is dependent on the query.
 
-/**********This is the dropbox version of Problem Definition *********/
-Consider a streaming system where a batch of tuples arrives at fixed intervals. The number of tuples within the batch could be different at different times. Consider one such batch, denoted by $N$, that arrives at time $t$ containing $n$  tuples. The tuples within the batch are represented as $N=\{t_1,t_2,...,t_n\}$. The system already maintains a set of $k$ tuples, where $k$ is fixed, that are representative of all the previous incoming batches. This set, denoted $T$, is represented as $T=\{\mathbf{t_1},\mathbf{t_2},...,\mathbf{t_k}\}$. The task is then to decide which of the tuples from $N$ should be  added to $T$ and, consequently, which tuples in $T$ should be discarded to keep the size of $T$ equal to $k$ while also keeping the \textit{quality} of $T$ as high as possible. The \textit{quality} of $T$, in our context, is the combined objective of three factors:
-\begin{enumerate}
-\item the diversity of tuples within $T$, 
-\item the relevance of the tuples to the original query, and 
-\item the amount of time elapsed since those tuples were generated, with more recent tuples given higher priority
-\end{enumerate}
+\subsection{Diversity}
+	Diversity is a complex operation divided into three parts: Replacement Policy, Distance Definition, and Distance Threshold.  
+
