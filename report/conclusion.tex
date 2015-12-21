@@ -1,1 +1,33 @@
-\section{Conclusion}
+\section{Future work} 
+
+In order for the paper to be published, below are list of things that we believe need to be improved:
+
+\subsection{Implement dynamic reconfiguration of p for batch approach}
+
+In order to make the windows replacement scheme work, we defined p as the coefficient of replacement, such that $0 \leq p \leq 1$. For every newly incoming window $w_1$, $k*p$ tuples from the top-k set will be replaced with the tuple in $w_1$. One naive way to implement the $p$ is to choose a fixed number, so that for every new window we only replace a fixed portion of tuples. However the drawback for this type of approach is obvious, as it is almost impossible to find the optimal $p$ that suits every input steam and window. In order to overcome this drawback, we purpose to implement a dynamic coefficient of replacement, such that:
+
+\begin{equation}
+  f(p) = (\dfrac{Score_{new}}{Score_{old}}) * p
+\end{equation}
+
+\begin{equation}
+  p =
+  \begin{cases}
+    f(p) & \text{if $0 \leq p \leq 1$}\\
+    p & \text{if otherwise}\\
+   \end{cases}
+\end{equation}
+
+Where $Score_{new}$ is the total score for all tuples in the new windows and $Score_{old}$ is the total score for all tuples in the old windows.
+
+By adopt the dynamic coefficient of replacement, StreamDiv will be able to reflect the underlying trends of changes of intensity value for all successor windows.
+
+\subsection{Implement smarter batch replacement policy}
+
+As the performs of StreamDiv will be heavily depends on the policy of how we conduct batch replacement, we need to carefully study the best way to perform the batch replacement. Currently, we only adopted a very naive approach for the batch replacement policy, in which for every newly incoming window we will run the incremental replacement algorithm $k * p$ times. Such replacement policy does not guarantee the optimal performance.
+
+In order to improvement the performance of the batch replacement policy. We purpose to implement following scheme. For each batch $b_i$, once a newly incoming tuple from $b_i$ are being insert into the top-k set, we will mark it as non-removable, so that it will not be replaced by any tuple that are also from $b_i$ even if it is a neighbors of other successor tuples in $b_i$. This way we can ensure a desired amount of tuples will be replaced for every batch, and instead of stop the replacement for current batch when $k * p$ times incremental algorithm are performed, the replacement will keeping running until $k*p$ tuples are being replaced. This way, the number of tuples being replaced in this windows will be more closely bind with the coefficient of replacement p. We believe by adopting both smarter batch replacement policy and dynamic reconfiguration we will be able to significantly improve the perform of StreamDiv.
+
+\subsection{Re-run experiments for a larger dataset.}
+
+One thing we have to admit is that our current experiment are very preliminary, since we have only used 75000 tweets as our current data set for the experiment, and our current data set are gathered using only the stop words (e.g. the, a, is) as keywords, hence the data set is lacking focuses. In order to improve our experiment we purpose to use more meaningful keywords along with more tweets data. So that the experiment can have greater convincingness. 

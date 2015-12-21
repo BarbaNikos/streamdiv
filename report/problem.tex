@@ -32,3 +32,12 @@ fraction p of the tuples replaced is proportional to the $\delta$ in diversity g
 compared to the replacement fraction of the previous epoch). As regards
 to replacement policy, we have the alternatives of random replacement,
 and least recently tuple received replacement.
+
+
+/**********This is the dropbox version of Problem Definition *********/
+Consider a streaming system where a batch of tuples arrives at fixed intervals. The number of tuples within the batch could be different at different times. Consider one such batch, denoted by $N$, that arrives at time $t$ containing $n$  tuples. The tuples within the batch are represented as $N=\{t_1,t_2,...,t_n\}$. The system already maintains a set of $k$ tuples, where $k$ is fixed, that are representative of all the previous incoming batches. This set, denoted $T$, is represented as $T=\{\mathbf{t_1},\mathbf{t_2},...,\mathbf{t_k}\}$. The task is then to decide which of the tuples from $N$ should be  added to $T$ and, consequently, which tuples in $T$ should be discarded to keep the size of $T$ equal to $k$ while also keeping the \textit{quality} of $T$ as high as possible. The \textit{quality} of $T$, in our context, is the combined objective of three factors:
+\begin{enumerate}
+\item the diversity of tuples within $T$, 
+\item the relevance of the tuples to the original query, and 
+\item the amount of time elapsed since those tuples were generated, with more recent tuples given higher priority
+\end{enumerate}
