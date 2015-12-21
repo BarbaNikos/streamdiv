@@ -12,60 +12,46 @@ Database file #2: references.bib
 -- IEEEtran.bst version 1.12 (2007/01/11) by Michael Shell.
 -- http://www.michaelshell.org/tex/ieeetran/bibtex/
 -- See the "IEEEtran_bst_HOWTO.pdf" manual for usage information.
-Name 1 in "L. Chen, G. Cong, X. Cao, and K.-L. Tan" has a comma at the end for entry Cong:2009
-while executing---line 4821 of file IEEEtran.bst
-Warning--empty booktitle in Cong:2009
-Name 1 in "P. Haghani, S. Michel, and K. Aberer" has a comma at the end for entry Haghani:2009
-while executing---line 4821 of file IEEEtran.bst
-Warning--empty booktitle in Haghani:2009
-Name 1 in "P. Haghani, S. Michel, and K. Aberer" has a comma at the end for entry Haghani:2010
-while executing---line 4821 of file IEEEtran.bst
-Warning--empty booktitle in Haghani:2010
-Name 1 in "K. Pripu¸ic?, I. P. ´arko, and K. Aberer" has a comma at the end for entry Aberer:2008
-while executing---line 4821 of file IEEEtran.bst
-Warning--empty booktitle in Aberer:2008
-Warning--empty booktitle in Chen:2015
 
 Done.
 You've used 6 entries,
             4024 wiz_defined-function locations,
-            1244 strings with 15820 characters,
-and the built_in function-call counts, 3773 in all, are:
-= -- 307
-> -- 58
-< -- 9
-+ -- 27
-- -- 12
-* -- 174
-:= -- 578
+            1244 strings with 15837 characters,
+and the built_in function-call counts, 4839 in all, are:
+= -- 354
+> -- 110
+< -- 36
++ -- 57
+- -- 18
+* -- 241
+:= -- 692
 add.period$ -- 13
 call.type$ -- 6
 change.case$ -- 6
-chr.to.int$ -- 15
-cite$ -- 11
-duplicate$ -- 308
-empty$ -- 370
-format.name$ -- 17
-if$ -- 873
+chr.to.int$ -- 96
+cite$ -- 6
+duplicate$ -- 341
+empty$ -- 451
+format.name$ -- 24
+if$ -- 1131
 int.to.chr$ -- 0
 int.to.str$ -- 6
-missing$ -- 54
+missing$ -- 60
 newline$ -- 43
 num.names$ -- 6
-pop$ -- 152
+pop$ -- 158
 preamble$ -- 1
 purify$ -- 0
 quote$ -- 2
-skip$ -- 328
+skip$ -- 376
 stack$ -- 0
-substring$ -- 82
-swap$ -- 197
+substring$ -- 229
+swap$ -- 257
 text.length$ -- 4
 text.prefix$ -- 0
 top$ -- 5
 type$ -- 6
-warning$ -- 5
-while$ -- 13
+warning$ -- 0
+while$ -- 19
 width$ -- 7
 write$ -- 78
-(There were 4 error messages)
