@@ -30,4 +30,25 @@ X.~Ge, P.~K. Chrysanthis, and A.~Labrinidis, ``Preferential diversity,'' in
   \url{http://doi.acm.org/10.1145/2795218.2795224}
 \BIBentrySTDinterwordspacing
 
+\bibitem{Cong:2009}
+X.~C. L.~Chen, G.~Cong and K.-L. Tan, ``Temporal spatial-keyword top-k
+  publish/subscribe,'' ser. ICDE, 2015.
+
+\bibitem{Haghani:2009}
+S.~M. P.~Haghani and K.~Aberer, ``Evaluating top-k queries over incomplete data
+  streams,'' ser. CIKM, 2009, p. 877?886.
+
+\bibitem{Haghani:2010}
+------, ``The gist of everything new: Personalized top-k processing over web
+  2.0 streamsh,'' ser. CIKM, 2010, p. 489?498.
+
+\bibitem{Aberer:2008}
+I.~P.~´. K.~Pripu¸ic? and K.~Aberer, ``Top-k/w publish/subscribe: Finding k
+  most relevant publications in sliding time window w,'' ser. DEBS, 2008, p.
+  127?138.
+
+\bibitem{Chen:2015}
+G.~C. Lisi~Chen, ``Diversity-aware top-k publish/subscribe for text stream,''
+  ser. SIGMOD, 2015.
+
 \end{thebibliography}

@@ -1,2 +1,15 @@
 \section{Related Work}
-Citations and stuff
+
+Our system in some senses are close to the top-k publish/subscribe system.  There are some existing work on such system (e.g. \cite{Cong:2009,Haghani:2009,Haghani:2010,Aberer:2008}), in all these systems an newly published item trigger a  subscription only if the score of this newly published item are higher then one or more items that are currently in the top-k published item list.  
+
+In \cite{Haghani:2009,Haghani:2010,Aberer:2008}, the relevance score of an item will remain the same until the lifetime of this item ends. Once an item being discarded an most relevant item from outside of the top-k list that are still with in it's own live period will be chosen to replace this newly discarded item. \cite{Haghani:2009,Haghani:2010,Aberer:2008} are different from ours, since we consider time as part of the relevancy score, hence the score of an item will constantly changing. 
+
+\cite{Cong:2009} is another top-k publish/subscribe system that consider geo-tagged tweets as published items, and the corresponding Points of Interest are the subscriptions. In \cite{Cong:2009} , the time is part of the relevance score, which is the same as in our system. However, our work is different from \cite{Cong:2009} , because on top of the relevancy and recency, we also considered the diversity, which introduced a new trade-off between diversity and relevance, therefore with this new challenge this existing approach is inapplicable. 
+
+In addition, \cite{Chen:2015} is consider to be the most similar to our approach, as it consider relevancy, recency and diversity for top-k subscription. It is different from our work since in \cite{Chen:2015} the author consider diversity as as part of the ranking score, such that diversity is a score that calculated by the MAXSUM algorithm that defined as following:
+
+\begin{mydef} \label{def1}
+ MaxSum \emph{generates a subset of $R$ with the maximum $f = \Sigma_{p_i,p_j \in S} dist(p_i, p_j )$ where \emph{dist} is some distance function, $p_i \neq p_j$ for all subsets with the same size.}
+\end{mydef}
+
+Our work uses a modified version PrefDiv as the diversification algorithm, which is a complete different diversification algorithm that doesn't require the heavily computation of MAXSUM algorithm. Moreover, \cite{Chen:2015} is build as a pure experiment system without the use of any existing real world streaming system. In contrast, our system is builded based on the existing streaming system STORM.
