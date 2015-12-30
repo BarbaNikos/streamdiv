@@ -40,6 +40,25 @@ approach, which annotated each tweet with a score,
 based on a given set of keywords.
 The score is just the number of
 keywords found in the text of the tweet.
+The result show in figures \ref{fig:avg-distance}, \ref{fig:avg-relevancy}, \ref{fig:norm-intensity}
+are based on the statistic of the final top-k list of each model. Hence, for the incremental algorithm the result are constant.
+
+Table \ref{table:par} illustrated different parameters used in our experiments for both incremental and batch replacement version of StreamDiv, such that $\alpha$ is the scaling factor between relevancy and diversity,
+Radius is a parameter that use to distinguish between the similar and dissimilar items, for two tweets that has the cosine similarity larger then Radius 
+we consider them as dissimilar.
+
+\begin{table}[!tb] 
+\centering
+\caption{PARAMETER CONFIGURATION}
+\resizebox{0.22\textwidth}{!}{\begin{tabular}{|c|c|} \hline
+PARAMETER & VALUE \\ \hline \hline
+$\alpha$ & 0.5 \\ \hline
+p & 0.5 \\ \hline
+Radius & 0.8 \\ \hline
+Dataset size & 75000 \\ \hline
+\end{tabular}}
+\label{table:par}
+\end{table}
 
 \begin{figure}[!htb]
 \centering

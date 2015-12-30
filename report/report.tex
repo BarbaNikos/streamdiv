@@ -118,7 +118,7 @@
 % The latest version can be obtained at:
 % http://www.ctan.org/tex-archive/macros/latex/contrib/cite/
 % The documentation is contained in the cite.sty file itself.
-
+\newcommand{\eat}[1]{}
 
 
 % *** GRAPHICS RELATED PACKAGES ***
@@ -190,7 +190,7 @@
 %
 \usepackage{algorithm}
 \usepackage{algorithmic}
-
+\usepackage{amsfonts}
 
 % algorithmic.sty was written by Peter Williams and Rogerio Brito.
 % This package provides an algorithmic environment fo describing algorithms.
@@ -382,15 +382,15 @@
 % for over three affiliations, or if they all won't fit within the width
 % of the page, use this alternative format:
 %
-\author{\IEEEauthorblockN{Steve,
-Nick,
+\author{\IEEEauthorblockN{Xiaoyu Ge,
+Nick R. Katsipoulakis,
 Nathan Ong,
-Zaeem,
+Zaeem Hussain,
 Panos Chrysanthis and
 Alexandros Labrinidis}
 \IEEEauthorblockA{Department of Computer Science\\
 University of Pittsburgh,
-Pittsburgh, Pennsylvania 15260\\ Email: }
+Pittsburgh, Pennsylvania 15260}
 }
 
 
@@ -537,11 +537,14 @@ Data mountains continue to grow in size, increasing the difficulty in retrieving
 
 
 % use section* for acknowledgement
+
+\eat{
+
 \section*{Acknowledgment}
 
 
 The authors would like to thank...
-
+}
 
 
 

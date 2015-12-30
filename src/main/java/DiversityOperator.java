@@ -52,6 +52,8 @@ public class DiversityOperator implements Serializable {
 
     /**
      * TODO: ADD SMARTER PROBABILITIES
+     * TODO: SORT BUFFER
+     * TODO: CHECK IF NEW TUPLE WAS CONSIDERED DISCARDED OR NOT
      * This function is only called when the buffers get full so no need to include that check within the function.
      * Remember to empty the buffers before returning.
      */

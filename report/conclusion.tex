@@ -31,3 +31,6 @@ In order to improvement the performance of the batch replacement policy. We purp
 \subsection{Re-run experiments for a larger dataset.}
 
 One thing we have to admit is that our current experiment are very preliminary, since we have only used 75000 tweets as our current data set for the experiment, and our current data set are gathered using only the stop words (e.g. the, a, is) as keywords, hence the data set is lacking focuses. In order to improve our experiment we purpose to use more meaningful keywords along with more tweets data. So that the experiment can have greater convincingness. 
+
+Moreover, currently we only measure the statistics (e.g. average distance, normalized intensity and average relevancy) of the final result of each model, which means we only calculate all of the statistics once for the final top-k list of each model after the entire excitation is finished. However, for the future work, we would like to measure the average performance over each batch for both incremental and batch replacement models for different batch sizes. With this more detailed set of experiments, the performance different between different models can be more clear. 
+
